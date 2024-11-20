@@ -1,0 +1,88 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+plt.figure(figsize=(10, 6))
+
+df = pd.read_csv(r"C:\Users\akhil\OneDrive\Desktop/air-quality-india.csv")
+
+df['PM2.5'].max()
+max_pm_row = df[df['PM2.5'] == df['PM2.5'].max()]
+print(max_pm_row)
+min_pm_row = df[df['PM2.5'] == df['PM2.5'].min()]
+print(min_pm_row)
+df.head(20)
+grouped = df.groupby('Hour')['PM2.5'].mean()
+grouped
+max_index = grouped.idxmax()
+max_index
+grouped_month = df.groupby('Month')['PM2.5'].mean()
+grouped_month
+min_index_month = grouped.idxmin()
+min_index_month
+max_index_month = grouped.idxmax()
+max_index_month
+grouped_month.sort_values()
+df.head(20)
+grouped_year = df.groupby('Year')['PM2.5'].mean()
+grouped_year
+import matplotlib.pyplot as plt
+# YEARWISE MEAN INDEX
+years = grouped_year.index
+mean_pm25_values = grouped_year.values
+
+# Creating a line plot with markers
+#plt.figure(figsize=(10, 6))
+plt.plot(years, mean_pm25_values, marker='o', color='blue', linestyle='-')
+plt.title('Mean PM2.5 Values by Year')
+plt.xlabel('Year')
+plt.ylabel('Mean PM2.5 Value')
+plt.grid(True)
+plt.show()
+grouped_month = df.groupby('Month')['PM2.5'].mean()
+grouped_month
+months = grouped_month.index
+mean_pm25_values = grouped_month.values
+
+# Creating a line plot with markers
+#plt.figure(figsize=(10, 6))
+plt.plot(months, mean_pm25_values, marker='o', color='red', linestyle='-')
+plt.title('Mean PM2.5 Values by Month')
+plt.xlabel('Month')
+plt.ylabel('Mean PM2.5 Value')
+plt.xticks(months)  # Setting x-axis ticks to be the months
+plt.grid(True)
+plt.show()
+grouped_hourly = df.groupby('Hour')['PM2.5'].mean()
+grouped_hourly
+hours = grouped_hourly.index
+mean_pm25_values = grouped_hourly.values
+
+# Creating a line plot with markers
+#plt.figure(figsize=(10, 6))
+plt.plot(hours, mean_pm25_values, marker='o', color='red', linestyle='-')
+plt.title('Mean PM2.5 Values by Month')
+plt.xlabel('Month')
+plt.ylabel('Mean PM2.5 Value')
+plt.xticks(hours)  # Setting x-axis ticks to be the months
+plt.grid(True)
+plt.show()
+df[:30]
+# Create a new column for the 4-hour intervals
+df['HourInterval'] = pd.cut(df['Hour'], bins=range(0, 25, 4), labels=['0-3', '4-7', '8-11', '12-15', '16-19', '20-23'])
+
+# Group by the created intervals and calculate mean PM2.5
+grouped_intervals = df.groupby('HourInterval')['PM2.5'].mean()
+
+print(grouped_intervals)
+
+grouped_intv = grouped_intervals.index
+mean_pm25_values = grouped_intervals.values
+
+# Creating a line plot with markers
+plt.figure(figsize=(5, 3))
+plt.plot(grouped_intv, mean_pm25_values, marker='o', color='green', linestyle='-')
+plt.title('Mean PM2.5 Values by grouped_intv')
+plt.xlabel('grouped_intv')
+plt.ylabel('Mean PM2.5 Value')
+plt.xticks(grouped_intv)  # Setting x-axis ticks to be the months
+plt.grid(True)
+plt.show()
